@@ -6,7 +6,7 @@ local RunService = game:GetService("RunService")
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
-local PlayerMouse = Player:GetMouse() -- API legada, substituída por UserInputService
+local PlayerMouse = Player:GetMouse()
 
 local redzlib = {
     Themes = {
@@ -24,11 +24,9 @@ local redzlib = {
             ["Color Dark Text"] = Color3.fromRGB(170, 180, 210)
         }
     },
-
     Info = {
-        Version = "1.0.0"
+        Version = "1.1.0"
     },
-
     Save = {
         UISize = {550, 380},
         TabSize = 160,
@@ -2669,35 +2667,15 @@ function redzlib:MakeWindow(Configs)
 			end)
 			
 			local DiscordInvite = {}
-			function DiscordInvite:Destroy()
-					InviteHolder:Destroy()
-					-- Adicionar desconexão de eventos aqui, se houver conexões salvas.
-					-- Como as conexões estão em funções anônimas e não foram salvas,
-					-- a destruição do InviteHolder e seus filhos (incluindo JoinButton)
-					-- deve ser suficiente para o garbage collector do Roblox.
-					-- No entanto, para maior segurança, se o JoinButton.Activated fosse salvo, seria desconectado.
-					-- Vou manter assim, pois a destruição do Instance deve limpar as conexões.
-				end
+			function DiscordInvite:Destroy() InviteHolder:Destroy() end
 			function DiscordInvite:Visible(...) Funcs:ToggleVisible(InviteHolder, ...) end
 			return DiscordInvite
 		end
 		return Tab
 	end
 	
-	local CloseConnection = CloseButton.Activated:Connect(Window.CloseBtn)
-	local MinimizeConnection = MinimizeButton.Activated:Connect(Window.MinimizeBtn)
-	
-	-- Adicionando a desconexão de eventos na função de destruição da janela, se existir.
-	-- Se não houver uma função de destruição explícita para a Window,
-	-- é crucial garantir que essas conexões sejam limpas.
-	-- Assumindo que Window.CloseBtn ou uma função externa lida com a destruição/limpeza.
-	-- Se a Window for um objeto com método :Destroy(), o código deve ser ajustado lá.
-	-- Por enquanto, vou salvar as conexões.
-	
-	-- Se a Window tiver um método :Destroy(), o código abaixo deve ser movido para lá:
-	-- CloseConnection:Disconnect()
-	-- MinimizeConnection:Disconnect()
-	
+	CloseButton.Activated:Connect(Window.CloseBtn)
+	MinimizeButton.Activated:Connect(Window.MinimizeBtn)
 	return Window
 end
 
